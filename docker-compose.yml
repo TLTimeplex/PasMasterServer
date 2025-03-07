@@ -1,0 +1,37 @@
+services:
+  app:
+    container_name: node-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    volumes:
+      # Remove for production
+      - .:/app
+      - /app/node_modules
+    environment:
+      - MYSQL_HOST=db
+      - MYSQL_PORT=3306
+      - MYSQL_USER=pasmaster
+      - MYSQL_PASSWORD=pasmaster
+      - MYSQL_DATABASE=pasmaster
+    depends_on:
+      - db
+
+  db:
+    container_name: mysql-server
+    image: mysql:8.0
+    ports:
+      - "5001:3306" # TODO: Remove for production
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: pasmaster
+      MYSQL_USER: pasmaster
+      MYSQL_PASSWORD: pasmaster
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
