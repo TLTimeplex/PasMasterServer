@@ -24,7 +24,6 @@ app.use((req, res, next) => {
     // TODO: Log misbehavior
     return res.status(403).json({
       message: 'Forbidden',
-      info: req.secure,
     });
   }
   next();
@@ -88,7 +87,7 @@ app.post('/login', async (req, res) => {
 
   // Insert token into database
   await db.execute('UPDATE Devices SET API_Token = ?, Token_Expire = ?, Last_Connection = ? WHERE Device_ID = ?', [token, expiration, ip, deviceID]);
-  
+
 
   res.status(200).json({
     message: 'success',

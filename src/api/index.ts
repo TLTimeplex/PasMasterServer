@@ -1,6 +1,6 @@
 import express from 'express';
 
-import emojis from './emojis';
+import devices from './devices';
 import { getDBConnection } from '../db';
 import { RowDataPacket } from 'mysql2/promise';
 
@@ -62,8 +62,8 @@ router.use(async (req, res, next) => {
     });
   }
 
-  req.headers['i-system-id'] = device.System_ID; // TODO: Check if this is allowed
-  req.headers['i-device-id'] = device.Device_ID; // TODO: Check if this is allowed
+  req.query.system_id = device.System_ID; // TODO: Check if this is allowed
+  req.query.device_id = device.Device_ID; // TODO: Check if this is allowed
 
   next();
 });
@@ -74,6 +74,6 @@ router.get<{}, any>('/', (req, res) => {
   });
 });
 
-router.use('/emojis', emojis);
+router.use('/devices', devices);
 
 export default router;

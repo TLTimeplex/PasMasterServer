@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `Devices` (
   KEY `Devices_Users_FK_1` (`Activated`),
   KEY `Devices_Users_FK` (`System_ID`),
   CONSTRAINT `Devices_Users_FK` FOREIGN KEY (`System_ID`) REFERENCES `Users` (`System_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `Devices_Users_FK_1` FOREIGN KEY (`Activated`) REFERENCES `Users` (`System_ID`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `Devices_Users_FK_1` FOREIGN KEY (`Activated`) REFERENCES `Devices` (`Device_ID`) ON DELETE SET NULL ON UPDATE CASCADE -- Need to be checked if it works
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
 
 -- Erstelle die Tabelle `data` (falls noch nicht vorhanden)
