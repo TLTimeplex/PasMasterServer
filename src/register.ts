@@ -34,16 +34,28 @@ router.post('/', async (req, res) => {
     });
   }
 
+  let systemID = rows[0].System_ID;
+
+  // Check if this is the first device
+  [rows] = await db.query<RowDataPacket[]>('SELECT * FROM Devices WHERE System_ID = ?', [systemID]);
+  let firstDevice = rows.length === 0;
+
   // Insert device into database
-  await db.execute('INSERT INTO Devices (System_ID, Public_Key, Device_Description) VALUES (?, ?, ?)', [rows[0].System_ID, publicRSAKey, description]);
+  await db.execute('INSERT INTO Devices (System_ID, Public_Key, Device_Description) VALUES (?, ?, ?)', [systemID, publicRSAKey, description]);
 
   [rows] = await db.query<RowDataPacket[]>('SELECT LAST_INSERT_ID() AS id');
 
   let deviceID = rows[0].id;
 
+  // If this is the first device, activate the first device
+  if (firstDevice) {
+    await db.execute('UPDATE Devices SET Activated = ? WHERE Device_ID = ?', [deviceID, deviceID]);
+  }
+
   res.status(200).json({
     message: 'Device registered',
     device_id: deviceID,
+    activated: firstDevice,
   });
 });
 
