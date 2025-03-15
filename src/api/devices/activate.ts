@@ -4,7 +4,7 @@ import { RowDataPacket } from 'mysql2';
 
 let router = express.Router();
 
-router.get('/', async (req, res) => {
+router.post('/', async (req, res) => {
   let selectedDeviceID = req.body.target;
   if (!selectedDeviceID) {
     return res.status(400).json({
