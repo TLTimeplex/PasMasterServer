@@ -1,6 +1,7 @@
 import express from 'express';
 
 import devices from './devices';
+import data from './data';
 import { getDBConnection } from '../db';
 import { RowDataPacket } from 'mysql2/promise';
 
@@ -75,5 +76,6 @@ router.get<{}, any>('/', (req, res) => {
 });
 
 router.use('/devices', devices);
+router.use('/data', data);
 
 export default router;
